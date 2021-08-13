@@ -1,3 +1,2 @@
-import './styles.css'
+import "./styles.css";
 
-console.log('app working!?!!!а....');
