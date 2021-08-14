@@ -51,6 +51,7 @@ button {
   padding: 10px;
   word-wrap: break-word;
   word-break: break-all;
+  min-height: 110px;
 }
 
 .output .previous-operand {
