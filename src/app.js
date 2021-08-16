@@ -7,11 +7,12 @@ class Calculator {
       this.clear()
    }
    
+   
    clear(){
       this.currentOperand =''
       this.previousOperand =''
       this.operation = undefined
-      // this.updateDisplay()
+      
    }
 
    delete(){
@@ -74,6 +75,39 @@ class Calculator {
       
       
    }
+
+   //функционал отдельных математических операции
+
+   makeInverse(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      this.currentOperand = this.currentOperand * -1
+   }
+
+   makePercent(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      this.currentOperand = this.currentOperand / 100
+   }
+   
+   makeSquarePower(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      this.currentOperand = this.currentOperand **2
+   }
+
+   makeCubePower(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      this.currentOperand = this.currentOperand **3
+   }
+
+   makeEulerPower(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      const e = 2.71828 
+      this.currentOperand = e  ** this.currentOperand
+   }
+
+   makeTenPower(){
+      if(this.currentOperand === ''||this.currentOperand === '.')return
+      this.currentOperand = 10 ** this.currentOperand
+   }
 }
 
 // вытягиваем души html элементов для работы с ними в JS
@@ -82,6 +116,15 @@ const operationButtons = document.querySelectorAll('[data-operation]');
 const equalsButton = document.querySelector('[data-equals]');
 const deleteButton = document.querySelector('[data-delete]');
 const allClearButton = document.querySelector('[data-all-clear]');
+const percentButton = document.querySelector('[data-percent]');
+const inverseButton = document.querySelector('[data-inverse]');
+const squarePowerButton = document.querySelector('[data-squarePower]');
+const cubePowerButton = document.querySelector('[data-cubePower]');
+const eulerPowerButton = document.querySelector('[data-EulerPower]');
+const tenPowerButton = document.querySelector('[data-tenPower]');
+
+
+
 const previousOperandTextElement = document.querySelector('[data-previous-operand]');
 const currentOperandTextElement = document.querySelector('[data-current-operand]');
 
@@ -116,5 +159,37 @@ allClearButton.addEventListener('click',button=>{
 
 deleteButton.addEventListener('click',button=>{
    calculator.delete()
+   calculator.updateDisplay()
+})
+
+
+percentButton.addEventListener('click',button=>{
+   calculator.makePercent()
+   calculator.updateDisplay()
+})
+
+inverseButton.addEventListener('click',button=>{
+   calculator.makeInverse()
+   calculator.updateDisplay()
+})
+
+
+squarePowerButton.addEventListener('click',button=>{
+   calculator.makeSquarePower()
+   calculator.updateDisplay()
+})
+
+cubePowerButton.addEventListener('click',button=>{
+   calculator.makeCubePower()
+   calculator.updateDisplay()
+})
+
+eulerPowerButton.addEventListener('click',button=>{
+   calculator.makeEulerPower()
+   calculator.updateDisplay()
+})
+
+tenPowerButton.addEventListener('click',button=>{
+   calculator.makeTenPower()
    calculator.updateDisplay()
 })
