@@ -1,5 +1,11 @@
 import "./styles.css";
 
+import {calculateExpression} from './utils/rpn/index.js'
+import{Mathemathic,eulerConstant}from './utils/math/index.js'
+// let currentOperand = '';
+// let previousOperand = '';
+// let operation='';
+
 const previousOperandTextElement = document.querySelector('[data-previous-operand]');
 const currentOperandTextElement = document.querySelector('[data-current-operand]');
 
@@ -14,147 +20,36 @@ const squarePowerButton = document.querySelector('[data-squarePower]');
 const cubePowerButton = document.querySelector('[data-cubePower]');
 const eulerPowerButton = document.querySelector('[data-EulerPower]');
 const tenPowerButton = document.querySelector('[data-tenPower]');
+const logButton = document.querySelector('[data-log]');
+const logTenButton = document.querySelector('[data-logTen]');
+const basePowerButton = document.querySelector('[data-basePower]'); 
 
-//Вспомогательная функция для подготовки выражения к переводу в обратную польскую нотацию
+
+// getDisplayNumber(number){
+//   const floatNumber = parseFloat(number)
+//   if(isNaN(floatNumber)) return ''
+//   return floatNumber.toLocaleString('en')
+// }
+
+// updateDisplay(){
+//   this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand)
+//   if(this.operation !== undefined){
+//      this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+//   }else this.previousOperandTextElement.innerText=''
+ 
+// }
+// appendNumber(number){
+//   if(number==='.' && this.currentOperand.includes('.')) return
+//   this.currentOperand = this.currentOperand.toString() + number.toString()
+// }
+// appendNumber(number){
+//   if(number==='.' && this.currentOperand.includes('.')) return
+//   this.currentOperand = this.currentOperand.toString() + number.toString()
+// }
 
 
 
-function prepareExpression(expression) {
-   let preparedExpression = "";
- 
-   for (let i = 0; i < expression.length; i++) {
-     let symbol = expression.charAt(i);
-     if (symbol == "-") {
-       if (i == 0) {
-         preparedExpression += "0";
-       } else if (expression.charAt(i - 1) == "(") {
-         preparedExpression += "0";
-       }
-     }
-     preparedExpression += symbol;
-   }
-   return preparedExpression;
- }
- 
- //Вспомогательная функция определения приоритета операций
- function getPriority(token) {
-   if (token === "*" || token === "/") {
-     return 3;
-   } else if (token === "+" || token === "-") {
-     return 2;
-   } else if (token === "(") {
-     return 1;
-   } else if (token === ")") {
-     return -1;
-   } else if (token === "^") {
-     return 4;
-   } else {
-     return 0;
-   }
- }
- 
- 
- //Функция преобразования в обратную польскую нотацию
- function     expressionToRPN(string) {
-   let stringStack = "";
-   let operatorsStack = [];
- 
-   let priority;
-   for (let i = 0; i < string.length; i++) {
-     priority = getPriority(string.charAt(i));
- 
-     if (priority == 0) {
-       stringStack += string.charAt(i);
-     }
-     if (priority == 1) {
-       operatorsStack.push(string.charAt(i));
-     }
-     if (priority > 1) {
-       stringStack += " ";
- 
-       while (!!operatorsStack.length) {
-         if (
-           getPriority(operatorsStack[operatorsStack.length - 1]) >= priority
-         ) {
-           stringStack += operatorsStack.pop();
-           stringStack += " ";
-         } else {
-           break;
-         }
-       }
-       operatorsStack.push(string.charAt(i));
-     }
-     if (priority == -1) {
-       stringStack += " ";
-       while (getPriority(operatorsStack[operatorsStack.length - 1]) != 1) {
-         stringStack += operatorsStack.pop();
-       }
-       operatorsStack.pop();
-     }
-   }
- 
-   while (!!operatorsStack.length) {
-     stringStack += " ";
-     stringStack += operatorsStack.pop();
-   }
-   return stringStack;
- }
- 
- 
- 
- 
- 
- 
- 
- //Функция вычисления обратной польской нотации
- function reversePolish(newExpr) {
-   let operand = "";
-   let stack = [];
- 
-   for (let i = 0; i < newExpr.length; i++) {  
- 
-     if (newExpr.charAt(i) == " ") { continue; }
- 
-     if (getPriority(newExpr.charAt(i)) == 0) {
-       while (newExpr.charAt(i) !== " " && getPriority(newExpr.charAt(i)) == 0) {
-         operand += newExpr.charAt(i++);
-         
- 
-         if (i == newExpr.length) { break; }
-         
-       }
-       stack.push(+operand);
- 
-       operand = "";
-       
-     }
-     
-     if (getPriority(newExpr.charAt(i)) > 1) {
-       let a = stack.pop();
-       let b = stack.pop();
-       if (newExpr[i] === "+") {
-         stack.push(parseFloat(a) + parseFloat(b));
-       } else if (newExpr[i] === "-") {
-         stack.push(parseFloat(b) - parseFloat(a));
-       } else if (newExpr[i] === "*") {
-         stack.push(parseFloat(a) * parseFloat(b));
-       } else if (newExpr[i] === "/") {
-         stack.push(parseFloat(b) / parseFloat(a));
-       } else if (newExpr[i] === "^") {
-         stack.push(Math.pow(parseFloat(b), parseFloat(a)));
-       }
-     }
- 
-   }
-   
-  
-   if (stack.length > 1) {
-     return "ERROR";
-   } else {
-     return stack[0];
-   }
-   
- }
+
 
 function clear(){
    previousOperandTextElement.innerText = ''
@@ -162,7 +57,7 @@ function clear(){
 }
 
 function appendSymbol(symbol) {
-      // if(symbol==='.' && currentOperandTextElement.innerHTML.includes('.')) return
+      if(symbol==='.' && currentOperandTextElement.innerHTML.includes('.')) return
       // this.currentOperand = this.currentOperand.toString() + number.toString()
       currentOperandTextElement.innerText += symbol.toString()
    
@@ -172,21 +67,75 @@ function appendSymbol(symbol) {
    currentOperandTextElement.innerText = currentOperandTextElement.innerText.toString().slice(0,-1)
  }
 
+ function percent(params) {
+  if(!currentOperandTextElement.innerText) return
+  currentOperandTextElement.innerText = calculateExpression(currentOperandTextElement.innerText)/100
+ }
+ function makeInverse(params) {
+  if(!currentOperandTextElement.innerText) return
+  console.log(currentOperandTextElement.innerText)
+  currentOperandTextElement.innerText = calculateExpression(currentOperandTextElement.innerText)*-1
+ }
+
+ function logarithmOnTen() {
+  if(!currentOperandTextElement.innerText) return
+  currentOperandTextElement.innerText = Mathemathic.logarithm(parseFloat(currentOperandTextElement.innerText),10).toFixed(5)
+ }
+
+ function logarithm() {
+  if(!currentOperandTextElement.innerText) return
+  currentOperandTextElement.innerText = Mathemathic.logarithm(parseFloat(currentOperandTextElement.innerText)).toFixed(5)
+ }
+
+ function squarePow() {
+  if(!currentOperandTextElement.innerText) return
+  let expression = currentOperandTextElement.innerText
+  currentOperandTextElement.innerText = Mathemathic.pow(expression,2)
+ }
+
+ function cubePow() {
+  if(!currentOperandTextElement.innerText) return
+  let expression = currentOperandTextElement.innerText
+  currentOperandTextElement.innerText = Mathemathic.pow(expression,3)
+ }
+
+ function tenPow() {
+  if(!currentOperandTextElement.innerText) return
+  let expression = currentOperandTextElement.innerText
+  currentOperandTextElement.innerText = Mathemathic.constBasePow(10,expression)
+ }
+
+ function eulerPow() {
+  if(!currentOperandTextElement.innerText) return
+  let expression = currentOperandTextElement.innerText
+  currentOperandTextElement.innerText = Mathemathic.constBasePow(eulerConstant,expression)
+ }
+
+function makePower(){
+  if(!currentOperandTextElement.innerText ) return
+  currentOperandTextElement.innerText+='^'
+}
 
 // навешиваем обработчики событий на кнопки
 numberButtons.forEach(button=>{
    button.addEventListener('click',()=>{
       appendSymbol(button.innerText)
-      
+      console.dir(button)
    })
 })
+
 
 operationButtons.forEach(button=>{
    button.addEventListener('click',()=>{
       appendSymbol(button.innerText)
+      console.dir(button)
    })
 })
 
+inverseButton.addEventListener('click',event=>{
+  makeInverse()
+  console.dir(event.target)
+})
 allClearButton.addEventListener('click',button=>{
    clear()
 })
@@ -198,16 +147,38 @@ deleteButton.addEventListener('click',button=>{
 equalsButton.addEventListener('click',button=>{
 let expression = currentOperandTextElement.innerText
 console.log(expression)
+   previousOperandTextElement.innerText = calculateExpression(expression);
+   currentOperandTextElement.innerText=''
+})
 
+percentButton.addEventListener('click',button=>{
+  percent()
+})
 
+logButton.addEventListener('click',button=>{
+logarithm()
+})
 
+logTenButton.addEventListener('click',button=>{
+logarithmOnTen()
+})
 
-try {
-   previousOperandTextElement.innerText = reversePolish(expressionToRPN(prepareExpression((expression))))
-} catch {
-alert('something goes wrong')
-}
-finally{
-   currentOperandTextElement.innerText = ''
-}
+squarePowerButton.addEventListener('click',button=>{
+  squarePow()
+})
+
+cubePowerButton.addEventListener('click',button=>{
+  cubePow()
+})
+
+eulerPowerButton.addEventListener('click',button=>{
+  eulerPow()
+})
+
+tenPowerButton.addEventListener('click',button=>{
+  tenPow()
+})
+
+basePowerButton.addEventListener('click',button=>{
+  makePower()
 })
