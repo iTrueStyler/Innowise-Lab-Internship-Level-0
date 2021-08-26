@@ -1,3 +1,5 @@
+import { Mathemathic } from "../math";
+
 
 export function calculateExpression(expression) {
    return reversePolish(expressionToRPN(prepareExpression((expression))))
@@ -31,8 +33,11 @@ export function calculateExpression(expression) {
    } else if (token === ")") {
      return -1;
    } else if (token === "^") {
-     return 4;
-   } else {
+     return 5;
+   } else if (token === "√") {
+    return 4;
+  }
+   else {
      return 0;
    }
  }
@@ -121,8 +126,12 @@ export function calculateExpression(expression) {
        } else if (newExpr[i] === "/") {
          stack.push(parseFloat(b) / parseFloat(a));
        } else if (newExpr[i] === "^") {
-         stack.push(Math.pow(parseFloat(b), parseFloat(a)));
-       }
+         stack.push(Mathemathic.pow(parseFloat(b), parseFloat(a)));
+       }else if (newExpr[i] === "√") {
+        stack.push((Mathemathic.rootPow(parseFloat(b), parseFloat(a))));
+      }
+       
+       
      }
  
    }

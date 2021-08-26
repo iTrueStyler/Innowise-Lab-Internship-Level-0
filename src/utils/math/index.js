@@ -20,8 +20,13 @@ export const Mathemathic={
       return number**base
     },
 
-    constBasePow: function (base,number) {
+    constBasePow: function (number,base) {
       return base**number
-    }
+    },
+    rootPow: function (base=1,number) {
+      return this.pow(number,1/base).toFixed(5)
+    },
+    
+
    
 }

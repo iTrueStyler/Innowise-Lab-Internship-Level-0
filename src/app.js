@@ -1,55 +1,29 @@
 import "./styles.css";
 
-import {calculateExpression} from './utils/rpn/index.js'
+import {calculateExpression} from './utils/rotatePolishNotation/index.js'
 import{Mathemathic,eulerConstant}from './utils/math/index.js'
-// let currentOperand = '';
-// let previousOperand = '';
-// let operation='';
-
-const previousOperandTextElement = document.querySelector('[data-previous-operand]');
-const currentOperandTextElement = document.querySelector('[data-current-operand]');
-
-const numberButtons = document.querySelectorAll('[data-number]');
-const operationButtons = document.querySelectorAll('[data-operation]');
-const equalsButton = document.querySelector('[data-equals]');
-const deleteButton = document.querySelector('[data-delete]');
-const allClearButton = document.querySelector('[data-all-clear]');
-const percentButton = document.querySelector('[data-percent]');
-const inverseButton = document.querySelector('[data-inverse]');
-const squarePowerButton = document.querySelector('[data-squarePower]');
-const cubePowerButton = document.querySelector('[data-cubePower]');
-const eulerPowerButton = document.querySelector('[data-EulerPower]');
-const tenPowerButton = document.querySelector('[data-tenPower]');
-const logButton = document.querySelector('[data-log]');
-const logTenButton = document.querySelector('[data-logTen]');
-const basePowerButton = document.querySelector('[data-basePower]'); 
-
-
-// getDisplayNumber(number){
-//   const floatNumber = parseFloat(number)
-//   if(isNaN(floatNumber)) return ''
-//   return floatNumber.toLocaleString('en')
-// }
-
-// updateDisplay(){
-//   this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand)
-//   if(this.operation !== undefined){
-//      this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
-//   }else this.previousOperandTextElement.innerText=''
- 
-// }
-// appendNumber(number){
-//   if(number==='.' && this.currentOperand.includes('.')) return
-//   this.currentOperand = this.currentOperand.toString() + number.toString()
-// }
-// appendNumber(number){
-//   if(number==='.' && this.currentOperand.includes('.')) return
-//   this.currentOperand = this.currentOperand.toString() + number.toString()
-// }
-
-
-
-
+import{
+  previousOperandTextElement,
+  currentOperandTextElement,
+  numberButtons,
+  operationButtons,
+  equalsButton,
+  deleteButton,
+  allClearButton,
+  percentButton,
+  inverseButton,
+  squarePowerButton,
+  cubePowerButton,
+  eulerPowerButton,
+  tenPowerButton,
+  logButton,
+  logTenButton,
+  basePowerButton,
+  decimalInverseButton,
+  rootPowButton,
+  squareRootButton,
+  cubeRootButton
+} from './utils/helpers/constants.js'
 
 function clear(){
    previousOperandTextElement.innerText = ''
@@ -58,7 +32,7 @@ function clear(){
 
 function appendSymbol(symbol) {
       if(symbol==='.' && currentOperandTextElement.innerHTML.includes('.')) return
-      // this.currentOperand = this.currentOperand.toString() + number.toString()
+      
       currentOperandTextElement.innerText += symbol.toString()
    
 }
@@ -67,11 +41,19 @@ function appendSymbol(symbol) {
    currentOperandTextElement.innerText = currentOperandTextElement.innerText.toString().slice(0,-1)
  }
 
- function percent(params) {
+
+ function decimalInverse() {
+  if(!currentOperandTextElement.innerText) return
+  currentOperandTextElement.innerText = (1/calculateExpression(currentOperandTextElement.innerText)).toFixed(5)
+  
+ }
+
+
+ function percent() {
   if(!currentOperandTextElement.innerText) return
   currentOperandTextElement.innerText = calculateExpression(currentOperandTextElement.innerText)/100
  }
- function makeInverse(params) {
+ function makeInverse() {
   if(!currentOperandTextElement.innerText) return
   console.log(currentOperandTextElement.innerText)
   currentOperandTextElement.innerText = calculateExpression(currentOperandTextElement.innerText)*-1
@@ -102,19 +84,29 @@ function appendSymbol(symbol) {
  function tenPow() {
   if(!currentOperandTextElement.innerText) return
   let expression = currentOperandTextElement.innerText
-  currentOperandTextElement.innerText = Mathemathic.constBasePow(10,expression)
+  currentOperandTextElement.innerText = Mathemathic.constBasePow(expression,10)
  }
 
  function eulerPow() {
   if(!currentOperandTextElement.innerText) return
   let expression = currentOperandTextElement.innerText
-  currentOperandTextElement.innerText = Mathemathic.constBasePow(eulerConstant,expression)
+  currentOperandTextElement.innerText = Mathemathic.constBasePow(expression,eulerConstant)
  }
 
 function makePower(){
   if(!currentOperandTextElement.innerText ) return
   currentOperandTextElement.innerText+='^'
 }
+function addRootSymbol(){
+  if(!currentOperandTextElement.innerText ) return
+  currentOperandTextElement.innerText+='√'
+}
+function makeRoot(base){
+  if(!currentOperandTextElement.innerText ) return
+   let number = currentOperandTextElement.innerText
+  currentOperandTextElement.innerText = Mathemathic.rootPow(base,number)
+}
+
 
 // навешиваем обработчики событий на кнопки
 numberButtons.forEach(button=>{
@@ -181,4 +173,20 @@ tenPowerButton.addEventListener('click',button=>{
 
 basePowerButton.addEventListener('click',button=>{
   makePower()
+})
+
+decimalInverseButton.addEventListener('click',button=>{
+  decimalInverse()
+})
+
+rootPowButton.addEventListener('click',()=>{
+  addRootSymbol()
+})
+
+squareRootButton.addEventListener('click',()=>{
+  makeRoot(2)
+})
+
+cubeRootButton.addEventListener('click',()=>{
+  makeRoot(3)
 })
