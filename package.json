@@ -7,7 +7,7 @@
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "node_modules/.bin/eslint src/",
+    "lint": "./node_modules/.bin/eslint src/*.js",
     "precommit": "lint-staged"
   },
   "keywords": [],
@@ -32,12 +32,5 @@
     "webpack": "^5.50.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
-  },
-  "lint-staged": {
-    "*.{js, jsx}": [
-      "node_modules/.bin/eslint --max-warnings=0",
-      "prettier --write",
-      "git add"
-    ]
   }
 }

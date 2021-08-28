@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
    <title>Document</title>
 </head>
+
 <body>
    <div class="calculator-grid">
       <div class="output">
          <div data-previous-operand class="previous-operand">
-            
+
          </div>
          <div data-current-operand class="current-operand">
-            
+
          </div>
       </div>
       <button data-operation>(</button>
       <button data-operation>)</button>
-      <button>mc</button>
-      <button>m+</button>
-      <button>m-</button>
-      <button>mr</button>
+      <button data-memory-clean>mc</button>
+      <button data-memory-plus>m+</button>
+      <button data-memory-minus>m-</button>
+      <button data-memory-read>mr</button>
       <button data-all-clear>AC</button>
       <button data-inverse>&plusmn;</button>
       <button data-percent>%</button>
@@ -36,7 +38,7 @@
       <button data-number class="numbers">7</button>
       <button data-number class="numbers">8</button>
       <button data-number class="numbers">9</button>
-      <button  data-operation class="base-operands">*</button>
+      <button data-operation class="base-operands">*</button>
       <button data-decimalInverse>1/x</button>
       <button data-squareRoot>2&#8730x</button>
       <button data-cubeRoot>3&#8730x</button>
@@ -46,7 +48,7 @@
       <button data-number class="numbers">4</button>
       <button data-number class="numbers">5</button>
       <button data-number class="numbers">6</button>
-      <button  data-operation class="base-operands">-</button>
+      <button data-operation class="base-operands">-</button>
       <button>x!</button>
       <button>sin</button>
       <button>cos</button>
@@ -65,9 +67,10 @@
       <button>Rand</button>
       <button data-delete>Del</button>
       <button data-number class="numbers">0</button>
-      <button data-number  class="numbers">.</button>
+      <button data-number class="numbers">.</button>
       <button data-equals class="base-operands">=</button>
-      
+
    </div>
 </body>
+
 </html>
