@@ -5,36 +5,24 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
    entry: './src/app.js',
-   output:{
+   output: {
       filename: 'bundle.[chunkhash].js',
-      path: path.resolve(__dirname,'public')
+      path: path.resolve(__dirname, 'public')
    },
-   devServer:{
-      port:3000
+   devServer: {
+      port: 3000
    },
-   plugins:[
+   plugins: [
       new HTMLPlugin({
          template: './src/index.html'
       }),
       new CleanWebpackPlugin()
    ],
-   module:{
-      rules:[
-        
+   module: {
+      rules: [
          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env'],
-                plugins: ['@babel/plugin-proposal-class-properties']
-              }
-            }
-          },
-          {
             test: /\.css$/i,
-            use: ['style-loader','css-loader'],
+            use: ['style-loader', 'css-loader'],
          },
       ],
    },

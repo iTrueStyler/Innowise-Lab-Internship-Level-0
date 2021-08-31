@@ -1,4 +1,3 @@
-
 export const previousOperandTextElement = document.querySelector('[data-previous-operand]');
 export const currentOperandTextElement = document.querySelector('[data-current-operand]');
 
@@ -24,3 +23,4 @@ export const memoryCleanButton = document.querySelector('[data-memory-clean]');
 export const memoryPlusButton = document.querySelector('[data-memory-plus]');
 export const memoryMinusButton = document.querySelector('[data-memory-minus]');
 export const memoryReadButton = document.querySelector('[data-memory-read]');
+export const secondButton = document.querySelector('[data-second]');

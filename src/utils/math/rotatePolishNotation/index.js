@@ -1,20 +1,19 @@
-import { Mathemathic } from "../math";
-
+import { Mathemathic } from '../methods';
 
 export function calculateExpression(expression) {
-  return reversePolish(expressionToRPN(prepareExpression((expression))))
+  return reversePolish(expressionToRPN(prepareExpression(expression)));
 }
 //Вспомогательная функция для подготовки выражения к переводу в обратную польскую нотацию
 function prepareExpression(expression) {
-  let preparedExpression = "";
+  let preparedExpression = '';
 
   for (let i = 0; i < expression.length; i++) {
     let symbol = expression.charAt(i);
-    if (symbol == "-") {
+    if (symbol == '-') {
       if (i == 0) {
-        preparedExpression += "0";
-      } else if (expression.charAt(i - 1) == "(") {
-        preparedExpression += "0";
+        preparedExpression += '0';
+      } else if (expression.charAt(i - 1) == '(') {
+        preparedExpression += '0';
       }
     }
     preparedExpression += symbol;
@@ -24,28 +23,26 @@ function prepareExpression(expression) {
 
 //Вспомогательная функция определения приоритета операций
 function getPriority(token) {
-  if (token === "*" || token === "/") {
+  if (token === '*' || token === '/') {
     return 3;
-  } else if (token === "+" || token === "-") {
+  } else if (token === '+' || token === '-') {
     return 2;
-  } else if (token === "(") {
+  } else if (token === '(') {
     return 1;
-  } else if (token === ")") {
+  } else if (token === ')') {
     return -1;
-  } else if (token === "^") {
+  } else if (token === '^') {
     return 5;
-  } else if (token === "√") {
+  } else if (token === '√') {
     return 4;
-  }
-  else {
+  } else {
     return 0;
   }
 }
 
-
 //Функция преобразования в обратную польскую нотацию
 function expressionToRPN(string) {
-  let stringStack = "";
+  let stringStack = '';
   let operatorsStack = [];
 
   let priority;
@@ -59,14 +56,12 @@ function expressionToRPN(string) {
       operatorsStack.push(string.charAt(i));
     }
     if (priority > 1) {
-      stringStack += " ";
+      stringStack += ' ';
 
       while (!!operatorsStack.length) {
-        if (
-          getPriority(operatorsStack[operatorsStack.length - 1]) >= priority
-        ) {
+        if (getPriority(operatorsStack[operatorsStack.length - 1]) >= priority) {
           stringStack += operatorsStack.pop();
-          stringStack += " ";
+          stringStack += ' ';
         } else {
           break;
         }
@@ -74,7 +69,7 @@ function expressionToRPN(string) {
       operatorsStack.push(string.charAt(i));
     }
     if (priority == -1) {
-      stringStack += " ";
+      stringStack += ' ';
       while (getPriority(operatorsStack[operatorsStack.length - 1]) != 1) {
         stringStack += operatorsStack.pop();
       }
@@ -83,64 +78,57 @@ function expressionToRPN(string) {
   }
 
   while (!!operatorsStack.length) {
-    stringStack += " ";
+    stringStack += ' ';
     stringStack += operatorsStack.pop();
   }
   return stringStack;
 }
 
-
-
 //Функция вычисления обратной польской нотации
 function reversePolish(newExpr) {
-  let operand = "";
+  let operand = '';
   let stack = [];
 
   for (let i = 0; i < newExpr.length; i++) {
-
-    if (newExpr.charAt(i) == " ") { continue; }
+    if (newExpr.charAt(i) == ' ') {
+      continue;
+    }
 
     if (getPriority(newExpr.charAt(i)) == 0) {
-      while (newExpr.charAt(i) !== " " && getPriority(newExpr.charAt(i)) == 0) {
+      while (newExpr.charAt(i) !== ' ' && getPriority(newExpr.charAt(i)) == 0) {
         operand += newExpr.charAt(i++);
 
-
-        if (i == newExpr.length) { break; }
-
+        if (i == newExpr.length) {
+          break;
+        }
       }
       stack.push(+operand);
 
-      operand = "";
-
+      operand = '';
     }
 
     if (getPriority(newExpr.charAt(i)) > 1) {
       let a = stack.pop();
       let b = stack.pop();
-      if (newExpr[i] === "+") {
+      if (newExpr[i] === '+') {
         stack.push(parseFloat(a) + parseFloat(b));
-      } else if (newExpr[i] === "-") {
+      } else if (newExpr[i] === '-') {
         stack.push(parseFloat(b) - parseFloat(a));
-      } else if (newExpr[i] === "*") {
+      } else if (newExpr[i] === '*') {
         stack.push(parseFloat(a) * parseFloat(b));
-      } else if (newExpr[i] === "/") {
+      } else if (newExpr[i] === '/') {
         stack.push(parseFloat(b) / parseFloat(a));
-      } else if (newExpr[i] === "^") {
+      } else if (newExpr[i] === '^') {
         stack.push(Mathemathic.pow(parseFloat(b), parseFloat(a)));
-      } else if (newExpr[i] === "√") {
-        stack.push((Mathemathic.rootPow(parseFloat(b), parseFloat(a))));
+      } else if (newExpr[i] === '√') {
+        stack.push(Mathemathic.rootPow(parseFloat(b), parseFloat(a)));
       }
-
-
     }
-
   }
 
-
   if (stack.length > 1) {
-    return "ERROR";
+    return 'ERROR';
   } else {
     return stack[0];
   }
-
 }
